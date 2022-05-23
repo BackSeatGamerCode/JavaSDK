@@ -10,4 +10,8 @@ public record Redemption(String command, String name, String guest) {
                 ", guest='" + guest + '\'' +
                 '}';
     }
+
+    public String toMessage(){
+        return guest + " has redeemed the reward " + name;
+    }
 }
