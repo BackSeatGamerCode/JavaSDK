@@ -2,7 +2,7 @@ package com.backseatgamer.javasdk.models;
 
 import java.util.Objects;
 
-public final class Redemption {
+public class Redemption {
     private String command;
     private String name;
     private String guest;
@@ -26,15 +26,15 @@ public final class Redemption {
         return guest + " has redeemed the reward " + name;
     }
 
-    public String command() {
+    public String getCommand() {
         return command;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
-    public String guest() {
+    public String getGuest() {
         return guest;
     }
 
