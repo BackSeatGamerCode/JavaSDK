@@ -1,5 +1,11 @@
+import com.backseatgamer.javasdk.BSGJavaSDK;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        BSGJavaSDK javaSDK = new BSGTestChild();
+
+        while (true){
+
+        }
     }
 }
