@@ -1,5 +1,6 @@
 import com.backseatgamer.javasdk.BSGJavaSDK;
 import com.backseatgamer.javasdk.events.BaseEvent;
+import com.backseatgamer.javasdk.events.HelloWorldEvent;
 import com.backseatgamer.javasdk.models.Redemption;
 
 public class BSGTestChild extends BSGJavaSDK {
@@ -10,6 +11,6 @@ public class BSGTestChild extends BSGJavaSDK {
 
     @Override
     protected BaseEvent getEvent(Redemption redemption) {
-        return null;
+        return new HelloWorldEvent();
     }
 }

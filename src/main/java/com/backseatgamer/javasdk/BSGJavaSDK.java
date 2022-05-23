@@ -9,14 +9,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
 public abstract class BSGJavaSDK extends Thread {
-    protected final Queue<Redemption> eventQueue = new LinkedList<>();
-    private final String HOST = "127.0.0.1";
+    protected final RedemptionQueue eventQueue = new RedemptionQueue();
     private final int PORT = 29175;
     private final Gson gson = new Gson();
-    private final long INTERVAL = 1;
 
     private void startThread(){
         setDaemon(true);
@@ -38,7 +35,8 @@ public abstract class BSGJavaSDK extends Thread {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                 String line = reader.readLine();
 
-                System.out.println(line);
+                Redemption redemption = gson.fromJson(line, Redemption.class);
+                eventQueue.enqueue(redemption);
 
                 OutputStream output = socket.getOutputStream();
                 PrintWriter writer = new PrintWriter(output, true);
@@ -47,6 +45,14 @@ public abstract class BSGJavaSDK extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void poll(Object... args){
+        if(!eventQueue.isEmpty()) {
+            Redemption redemption = eventQueue.dequeue();
+            onRedemptionReceived(redemption, args);
+            getEvent(redemption).execute(args);
         }
     }
 
