@@ -26,25 +26,31 @@ public abstract class BSGJavaSDK extends Thread {
     }
 
     public void run() {
-        try(
-                ServerSocket socketServer = new ServerSocket(PORT);
-                Socket socket = socketServer.accept()
-        ) {
-            while (true){
-                InputStream input = socket.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                String line = reader.readLine();
+        while (true){
+            try(
+                    ServerSocket socketServer = new ServerSocket(PORT);
+                    Socket socket = socketServer.accept()
+            ) {
+                while (true){
+                    InputStream input = socket.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    String line = reader.readLine();
 
-                Redemption redemption = gson.fromJson(line, Redemption.class);
-                eventQueue.enqueue(redemption);
+                    Redemption redemption = gson.fromJson(line, Redemption.class);
 
-                OutputStream output = socket.getOutputStream();
-                PrintWriter writer = new PrintWriter(output, true);
-                writer.println("done");
+                    if(line != null){
+                        eventQueue.enqueue(redemption);
+                        break;
+                    }
+
+                    OutputStream output = socket.getOutputStream();
+                    PrintWriter writer = new PrintWriter(output, true);
+                    writer.println("done");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
